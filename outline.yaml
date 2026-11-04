@@ -1,0 +1,115 @@
+# =====================================================================
+# OUTLINE: structure and wording of the after-visit summary.
+# Sections are written in this order, matching the real document.
+#
+# Templates use Jinja2 syntax: {{ variable }}, plus these filters:
+#   pick           -> one random item from a list         {{ dx.instructions | pick }}
+#   sample(k)      -> k random items (or fewer)            {{ dx.warning_signs | sample(2) | join_and }}
+#   join_and       -> "a, b, and c"
+#   cap            -> capitalize the first letter
+#
+# Variables available in every template:
+#   patient.name  patient.first  patient.dob  visit_date  provider
+#   diagnoses (list)  medications (list, after medical rules are applied)
+#   follow_up_weeks (shortest interval across the case's diagnoses)
+#   dx_plain_list  dx_name_list   (already joined with join_and)
+# Inside a section with repeat: diagnoses   -> dx  (code, name, plain, instructions,
+#                                                   warning_signs, follow_up_weeks, extra)
+# Inside a section with repeat: medications -> med (name, dose, freq, purpose, note)
+#   and n (1, 2, 3...) in both.
+#
+# Section fields:
+#   heading:  list of variants, or null for no heading
+#   heading_inline: true  -> body continues on the heading's line ("Diagnosis: ...")
+#   style:    handwritten | printed (printed = typed font, no jitter)
+#   format:   paragraph (sentences flow together) | list (one item per line, with bullets)
+#             | lines (every sentence on its own line, no bullets)
+#   bullets:  list markers to choose from for list format; {n} = item number
+#   repeat:   diagnoses | medications   (omit for once per page)
+#   p:        probability the section is included (default 1)
+#   sentences: each is a list of variants, or {variants: [...], p: 0.5}
+# =====================================================================
+
+knowledge_base: diagnoses.yaml
+
+fake_data:
+  first_names: [Maria, James, Linda, Robert, Aisha, Wei, Carlos, Priya, John, Fatima, David, Grace, Omar, Susan, Kevin, Rosa]
+  last_names: [Garcia, Smith, Johnson, Nguyen, Patel, Brown, Lee, Williams, Khan, Lopez, Davis, Chen, Martin, Ali, Wilson]
+  providers: [Dr. Shah, Dr. Miller, Dr. Okafor, Dr. Rivera, Dr. Kim, Dr. Thompson, "Sarah Lane, NP", "Mark Reyes, PA"]
+  birth_year_range: [1940, 2004]
+  visit_year_range: [2024, 2026]
+
+validation:
+  require_each_diagnosis: true   # every diagnosis's name, plain wording, or code must appear on the page
+  max_retries: 4                 # re-render smaller if text overflows the page
+
+sections:
+  - id: title
+    heading: null
+    style: handwritten
+    format: paragraph
+    sentences:
+      - ["After Visit Summary", "Visit Summary", "After-Visit Summary", "AVS"]
+
+  - id: header
+    heading: null
+    format: lines
+    sentences:
+      - ["Patient: {{ patient.name }}", "Name: {{ patient.name }}", "Pt: {{ patient.name }}"]
+      - ["DOB: {{ patient.dob }}   Visit: {{ visit_date }}", "Date of birth {{ patient.dob }}, seen {{ visit_date }}"]
+      - {variants: ["Provider: {{ provider }}", "Seen by {{ provider }}"], p: 0.7}
+
+  - id: reason
+    heading: ["Reason for visit:", "Why you came in:", "Reason for Visit"]
+    heading_inline: true
+    format: paragraph
+    sentences:
+      - ["You were seen today for {{ dx_plain_list }}.",
+         "Today's visit was for {{ dx_plain_list }}.",
+         "{{ patient.first }} came in today for {{ dx_plain_list }}."]
+
+  - id: diagnoses
+    heading: ["Diagnoses:", "Today's diagnoses:", "Assessment:"]
+    format: list
+    repeat: diagnoses
+    bullets: ["{n}.", "-", "{n})"]
+    sentences:
+      - ["{{ dx.name }} ({{ dx.code }})", "{{ dx.name }} - {{ dx.code }}", "{{ dx.code }} {{ dx.name }}"]
+
+  - id: medications
+    heading: ["Medications:", "Your medicines:", "Meds:"]
+    format: list
+    repeat: medications
+    bullets: ["-", "{n}.", ""]
+    sentences:
+      - ["{{ med.name | cap }} {{ med.dose }} {{ med.freq }}",
+         "{{ med.name | cap }} {{ med.dose }}, {{ med.freq }} for {{ med.purpose }}",
+         "Take {{ med.name }} {{ med.dose }} {{ med.freq }}"]
+      - {variants: ["({{ med.note }})"], p: 1.0, when: "med.note"}
+
+  - id: instructions
+    heading: ["Instructions:", "What to do at home:", "Plan:"]
+    format: paragraph
+    repeat: diagnoses
+    sentences:
+      - ["For your {{ dx.plain }}: {{ dx.instructions | pick }}",
+         "{{ dx.instructions | pick }}"]
+      - {variants: ["{{ dx.instructions | pick }}"], p: 0.4}
+      - {variants: ["{{ dx.extra | join(' ') }}"], when: "dx.extra"}
+
+  - id: warnings
+    heading: ["Call us or go to the ER if you have:", "Warning signs:", "Return precautions:"]
+    heading_inline: true
+    format: paragraph
+    p: 0.85
+    sentences:
+      - ["{{ diagnoses | map(attribute='warning_signs') | map('sample', 2) | sum(start=[]) | join_and }}."]
+
+  - id: follow_up
+    heading: ["Follow-up:", "Next visit:"]
+    heading_inline: true
+    format: paragraph
+    sentences:
+      - ["Return in {{ follow_up_weeks }} weeks.",
+         "Follow up with {{ provider }} in {{ follow_up_weeks }} weeks.",
+         "See us again in {{ follow_up_weeks }} weeks, sooner if needed."]

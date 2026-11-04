@@ -1,0 +1,24 @@
+# One free-form clinical paragraph, matching the style of the real card.
+knowledge_base: diagnoses.yaml
+fake_data:
+  first_names: [Maria, James, Linda, Robert]
+  last_names: [Garcia, Smith, Nguyen, Patel]
+  providers: [Dr. Shah, Dr. Kim]
+  birth_year_range: [1950, 2004]
+  visit_year_range: [2025, 2026]
+validation: {require_each_diagnosis: true, max_retries: 4}
+sections:
+  - id: note
+    heading: null
+    format: paragraph
+    sentences:
+      - ["The patient reported {{ diagnoses | map(attribute='warning_signs') | map('sample', 2) | sum(start=[]) | join_and }}.",
+         "The patient came in with {{ diagnoses | map(attribute='warning_signs') | map('sample', 2) | sum(start=[]) | join_and }}."]
+      - ["Upon examining the patient, they have {{ dx_plain_list }}.",
+         "Findings are consistent with {{ dx_plain_list }}."]
+      - {variants: ["Gave them a prescription for {% for m in medications %}{{ m.name }} {{ m.dose }} {{ m.freq }}{{ ', ' if not loop.last }}{% endfor %}.",
+                    "Started {% for m in medications %}{{ m.name }} {{ m.dose }} {{ m.freq }}{{ ', ' if not loop.last }}{% endfor %}."],
+         when: "medications"}
+      - ["{{ diagnoses[0].instructions | pick }}"]
+      - ["Need patient to come back in {{ follow_up_weeks }} {{ 'week' if follow_up_weeks == 1 else 'weeks' }}.",
+         "Follow up in {{ follow_up_weeks }} {{ 'week' if follow_up_weeks == 1 else 'weeks' }}."]

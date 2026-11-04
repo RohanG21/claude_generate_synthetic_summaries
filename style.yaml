@@ -1,0 +1,79 @@
+# =====================================================================
+# STYLE PROFILE: measurements taken from your REAL scanned document.
+#
+# Any numeric value can be written three ways:
+#   12                     -> fixed value
+#   {mean: 12, sd: 2}      -> normal distribution (clipped to mean +/- 3 sd)
+#   [10, 14]               -> uniform between min and max
+#
+# "page-level" values are sampled once per page (one writer, one sitting).
+# "per-character" / "per-line" values are re-sampled for every char/line.
+# All pixel values are at the dpi below.
+# =====================================================================
+
+dpi: 300
+page:
+  width_in: 8.5
+  height_in: 11.0
+
+# ---------------- Layout (measure with a horizontal projection profile)
+margins_px:
+  left:   {mean: 150, sd: 15}    # page-level: where lines start
+  top:    {mean: 220, sd: 20}
+  bottom: 200
+  right:  140                    # nominal right edge
+right_ragged_px: {mean: 60, sd: 45}   # per-line: how far short of the right edge lines wrap
+line_spacing_px: {mean: 95, sd: 4}    # page-level: baseline-to-baseline distance
+line_spacing_jitter_px: {mean: 0, sd: 3}  # per-line extra variation
+paragraph:
+  indent_px: [0, 60]             # page-level: first-line indent of paragraphs
+  gap_lines: 0.6                 # extra blank space between sections, in lines
+list_item_indent_px: 30          # indent for items in list-format sections
+
+# ---------------- Writing size and shape
+x_height_px: {mean: 24, sd: 1.5}       # page-level: height of a, e, o (sets font size)
+heading_scale: 1.15                    # headings written a bit larger
+slant_deg: {mean: 6, sd: 3}            # page-level: + leans right (shear)
+baseline_tilt_deg: {mean: -0.3, sd: 0.6}  # per-line: line rises/falls across page
+stroke_width_px: {mean: 3.2, sd: 0.4}  # page-level target pen width (dilate/erode to match)
+word_gap_px: {mean: 20, sd: 4}         # per-word space between words
+ink_density: [0.85, 1.0]               # page-level: how dark the ink is before binarizing
+
+# ---------------- Per-character jitter
+char_jitter:
+  size_rel: {mean: 0, sd: 0.06}        # relative size change per char (0.06 = ~6%)
+  rotation_deg: {mean: 0, sd: 3.0}     # per-char rotation
+  baseline_px: {mean: 0, sd: 1.5}      # per-char random vertical offset
+  spacing_px: {mean: 0, sd: 1.2}       # per-char extra space (+/-) after the char
+  wobble:                              # smooth baseline wave along each line
+    amplitude_px: [0.5, 3.0]
+    wavelength_px: [250, 700]
+
+# ---------------- Handwriting fonts (pick the ones closest to the real writer)
+fonts_dir: fonts
+handwriting_fonts:                     # file: weight (0 = never used) (relative probability per page)
+  Caveat.ttf: 2
+  Kalam-Regular.ttf: 2
+  IndieFlower-Regular.ttf: 1
+  ShadowsIntoLight.ttf: 1
+  PatrickHand-Regular.ttf: 1
+  GochiHand-Regular.ttf: 1
+  ReenieBeanie.ttf: 1
+  NothingYouCouldDo.ttf: 1
+  Zeyada.ttf: 1
+  DawningofaNewDay.ttf: 1
+printed_font: DejaVuSans.ttf           # used only by sections marked style: printed
+
+# ---------------- Scan simulation (match the real scan's look)
+scan:
+  skew_deg: {mean: 0, sd: 0.6}         # page-level rotation of the whole sheet
+  blur_sigma: [0.4, 0.9]               # softening before thresholding
+  paper_noise_sd: [0.02, 0.06]         # grayscale paper texture before thresholding
+  binarize: otsu                       # otsu | adaptive | fixed | none (keep grayscale)
+  fixed_threshold: 0.5                 # used when binarize: fixed (0..1)
+  adaptive_block: 51                   # used when binarize: adaptive (odd number)
+  adaptive_c: 12
+  speckle_rate: [0.00002, 0.0003]      # fraction of pixels turned into black dots
+  stroke_break_rate: [0.0, 0.004]      # fraction of ink pixels that get small white gaps
+  jpeg_quality: null                   # e.g. 75 to add compression artifacts, null = off
+  output_mode: binary                  # binary (1-bit PNG) | gray

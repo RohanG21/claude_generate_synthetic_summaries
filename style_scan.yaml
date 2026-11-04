@@ -1,0 +1,86 @@
+# =====================================================================
+# STYLE PROFILE measured from the attached scan (1212 x 807 px photo,
+# one cursive paragraph, about 10 lines).
+#
+# Physical size is unknown, so pixel values are kept at the photo's own
+# scale: dpi 200 x 6.06 in x 4.035 in = 1212 x 807 px (about the shape
+# of a 6x4 card). If you know the real paper size, set width_in/height_in
+# and dpi, and multiply every *_px value by (new_dpi / 200).
+#
+# Value formats:  12 | {mean: 12, sd: 2} | [10, 14]
+# =====================================================================
+
+dpi: 200
+page:
+  width_in: 6.06
+  height_in: 4.035
+
+# ---------------- Layout (measured from straightened line profile)
+margins_px:
+  left:   {mean: 170, sd: 18}    # lines start at x = 144-197, drifting right lower down
+  top:    {mean: 32, sd: 6}      # first baseline lands at y ~ 90
+  bottom: 30
+  right:  25                     # longest lines reach x ~ 1187 of 1212
+right_ragged_px: {mean: 60, sd: 40}   # line ends vary between x ~ 1070 and 1187
+line_spacing_px: {mean: 73, sd: 3}    # measured: 63-80 px, median 73
+line_spacing_jitter_px: {mean: 0, sd: 6}
+paragraph:
+  indent_px: 0                   # no first-line indent
+  gap_lines: 0                   # one continuous paragraph, no section gaps
+list_item_indent_px: 0
+
+# ---------------- Writing size and shape
+x_height_px: {mean: 28, sd: 2}         # measured core height 26-31 px
+heading_scale: 1.0                     # no headings in the real document
+slant_deg: {mean: 8, sd: 3}            # projection measured ~4-5 deg; strokes look steeper by eye
+baseline_tilt_deg: {mean: 0, sd: 0.7}  # line-to-line variation (measured sd 0.74)
+stroke_width_px: {mean: 3.8, sd: 0.4}  # measured 3.85 px
+word_gap_px: {mean: 26, sd: 8}         # measured median 23, mean 28
+ink_density: [0.9, 1.0]                # dark pen; lower if your scans look greyer
+
+# ---------------- Per-character jitter (irregular, fast cursive)
+char_jitter:
+  size_rel: {mean: 0, sd: 0.12}
+  rotation_deg: {mean: 0, sd: 1.5}     # kept low so cursive joins stay connected
+  baseline_px: {mean: 0, sd: 2.5}
+  spacing_px: {mean: 0, sd: 1.0}
+  wobble:
+    amplitude_px: [2.0, 6.0]           # lines visibly undulate
+    wavelength_px: [300, 700]
+
+# ---------------- Fonts: the writer uses connected cursive, so only
+# cursive-style fonts are on. Print-style fonts are set to 0.
+fonts_dir: fonts
+handwriting_fonts:
+  HomemadeApple-Regular.ttf: 3
+  LaBelleAurore.ttf: 3
+  Kristi-Regular.ttf: 2
+  Cedarville-Cursive.ttf: 2
+  Zeyada.ttf: 1
+  DawningofaNewDay.ttf: 1
+  Caveat.ttf: 0
+  ReenieBeanie.ttf: 0
+  NothingYouCouldDo.ttf: 0
+printed_font: DejaVuSans.ttf
+
+# ---------------- Elastic distortion: random smooth bending of the strokes.
+# alpha = how far strokes move (px), sigma = how smooth the bending is (px).
+# Small sigma = wiggly, scrawled letters; large sigma = whole words drift.
+elastic:
+  alpha_px: [3, 6]
+  sigma_px: [8, 14]
+
+# ---------------- Capture simulation: this is a grayscale phone photo
+# saved as JPEG, not a 1-bit scan, so binarizing is turned off.
+scan:
+  skew_deg: {mean: 1.6, sd: 0.6}       # lines rise ~1.6 deg left to right
+  blur_sigma: [0.6, 1.0]               # photo softness
+  paper_noise_sd: [0.015, 0.035]
+  binarize: none
+  fixed_threshold: 0.5
+  adaptive_block: 51
+  adaptive_c: 12
+  speckle_rate: [0.0, 0.00005]
+  stroke_break_rate: [0.0, 0.002]
+  jpeg_quality: 70
+  output_mode: gray

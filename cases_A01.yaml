@@ -1,0 +1,3 @@
+seed: 7
+cases:
+  - {id: typhoid_meningitis, diagnoses: [A01.01], copies: 1}

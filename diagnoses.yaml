@@ -1,0 +1,184 @@
+# =====================================================================
+# DIAGNOSIS KNOWLEDGE BASE: the medical facts every template draws from.
+# Templates can only print what is here, so the generator cannot invent
+# doses or codes. EXAMPLE DATA: have a clinician review before training.
+#
+# Keyed by ICD-10-CM code. Fields:
+#   name            clinical wording           plain   patient-friendly wording
+#   instructions    list (templates pick from it)
+#   warning_signs   list (templates join/sample from it)
+#   follow_up_weeks follow-up interval; the case uses the SHORTEST across its diagnoses
+#   extra_instructions_if  {other_code: [text, ...]} added when both diagnoses are present
+#   medications     list of meds, each with:
+#       name, dose, freq, purpose
+#       avoid_if:     [codes]  -> med is dropped if any of these diagnoses are present
+#       alternative:  {med}    -> used instead when the med is dropped
+#       dose_if:      {code: dose} -> dose override when that diagnosis is present
+# =====================================================================
+
+I10:
+  name: Essential hypertension
+  plain: high blood pressure
+  medications:
+    - {name: lisinopril, dose: 10 mg, freq: once a day, purpose: blood pressure}
+  instructions:
+    - Limit salt to less than 2 grams a day.
+    - Check your blood pressure at home and write down the numbers.
+    - Walk or exercise at least 30 minutes most days.
+  warning_signs: [chest pain, severe headache, vision changes, weakness on one side]
+  follow_up_weeks: 4
+
+E11.9:
+  name: Type 2 diabetes mellitus without complications
+  plain: type 2 diabetes
+  medications:
+    - name: metformin
+      dose: 1000 mg
+      freq: twice a day with meals
+      purpose: blood sugar
+      dose_if: {N18.30: 500 mg}
+  instructions:
+    - Check your blood sugar every morning before breakfast.
+    - Cut back on sugary drinks, white bread, and sweets.
+    - Check your feet every day for cuts or sores.
+  warning_signs: [blood sugar over 300, blood sugar under 70, confusion, extreme thirst]
+  follow_up_weeks: 12
+  extra_instructions_if:
+    N18.30: [Your metformin dose is lower because of your kidney function.]
+
+E78.5:
+  name: Hyperlipidemia, unspecified
+  plain: high cholesterol
+  medications:
+    - {name: atorvastatin, dose: 20 mg, freq: every night, purpose: cholesterol}
+  instructions:
+    - Eat less fried food and red meat.
+    - Add more vegetables, beans, and whole grains to your meals.
+  warning_signs: [unexplained muscle pain or weakness, dark urine]
+  follow_up_weeks: 12
+
+J45.909:
+  name: Unspecified asthma, uncomplicated
+  plain: asthma
+  medications:
+    - {name: albuterol inhaler, dose: 2 puffs, freq: every 4 to 6 hours as needed, purpose: wheezing}
+    - {name: fluticasone inhaler, dose: 110 mcg 2 puffs, freq: twice a day, purpose: asthma control}
+  instructions:
+    - Rinse your mouth after using the fluticasone inhaler.
+    - Avoid smoke, dust, and other triggers.
+    - Carry your albuterol inhaler with you.
+  warning_signs: [trouble breathing, needing albuterol more than every 4 hours, blue lips]
+  follow_up_weeks: 6
+
+N18.30:
+  name: Chronic kidney disease, stage 3 unspecified
+  plain: chronic kidney disease
+  medications: []
+  instructions:
+    - Do not take ibuprofen, naproxen, or other NSAIDs.
+    - Drink water regularly unless told otherwise.
+    - Get your kidney blood tests done before your next visit.
+  warning_signs: [swelling in legs, much less urine than usual, shortness of breath]
+  follow_up_weeks: 8
+
+J06.9:
+  name: Acute upper respiratory infection, unspecified
+  plain: a cold (upper respiratory infection)
+  medications:
+    - {name: acetaminophen, dose: 650 mg, freq: every 6 hours as needed, purpose: fever and aches}
+    - {name: saline nasal spray, dose: 2 sprays, freq: each nostril as needed, purpose: congestion}
+  instructions:
+    - Rest and drink plenty of fluids.
+    - Antibiotics are not needed for a viral cold.
+  warning_signs: [fever over 102 for more than 3 days, trouble breathing, chest pain]
+  follow_up_weeks: 2
+
+K21.9:
+  name: Gastro-esophageal reflux disease without esophagitis
+  plain: acid reflux (GERD)
+  medications:
+    - {name: omeprazole, dose: 20 mg, freq: once a day before breakfast, purpose: acid reflux}
+  instructions:
+    - Do not lie down for 3 hours after eating.
+    - Avoid spicy food, coffee, and alcohol.
+    - Raise the head of your bed.
+  warning_signs: [black stools, vomiting blood, trouble swallowing]
+  follow_up_weeks: 8
+
+M54.50:
+  name: Low back pain, unspecified
+  plain: low back pain
+  medications:
+    - name: ibuprofen
+      dose: 400 mg
+      freq: every 8 hours with food as needed
+      purpose: back pain
+      avoid_if: [N18.30, I48.91, K21.9]
+      alternative: {name: acetaminophen, dose: 650 mg, freq: every 6 hours as needed, purpose: pain}
+  instructions:
+    - Keep moving gently; bed rest can make it worse.
+    - Use heat on your lower back for 20 minutes at a time.
+  warning_signs: [numbness in the groin, loss of bladder or bowel control, leg weakness]
+  follow_up_weeks: 4
+
+F41.1:
+  name: Generalized anxiety disorder
+  plain: anxiety
+  medications:
+    - {name: sertraline, dose: 50 mg, freq: once a day, purpose: anxiety}
+  instructions:
+    - It can take 4 to 6 weeks for sertraline to work fully.
+    - Try daily breathing exercises or a short walk when anxious.
+  warning_signs: [thoughts of harming yourself, severe agitation]
+  follow_up_weeks: 4
+
+E03.9:
+  name: Hypothyroidism, unspecified
+  plain: an underactive thyroid
+  medications:
+    - {name: levothyroxine, dose: 50 mcg, freq: once a day on an empty stomach, purpose: thyroid}
+  instructions:
+    - Take levothyroxine 30 minutes before food or other pills.
+    - We will recheck your thyroid blood test in 6 weeks.
+  warning_signs: [racing heartbeat, chest pain, severe fatigue]
+  follow_up_weeks: 6
+
+I48.91:
+  name: Unspecified atrial fibrillation
+  plain: atrial fibrillation (irregular heartbeat)
+  medications:
+    - {name: apixaban, dose: 5 mg, freq: twice a day, purpose: preventing blood clots}
+    - {name: metoprolol succinate, dose: 50 mg, freq: once a day, purpose: heart rate}
+  instructions:
+    - Do not skip doses of apixaban.
+    - Avoid ibuprofen, naproxen, and aspirin unless we tell you to take them.
+  warning_signs: [fainting, chest pain, sudden weakness or trouble speaking, unusual bleeding]
+  follow_up_weeks: 4
+
+N39.0:
+  name: Urinary tract infection, site not specified
+  plain: a urinary tract infection
+  medications:
+    - name: nitrofurantoin
+      dose: 100 mg
+      freq: twice a day for 5 days
+      purpose: infection
+      avoid_if: [N18.30]
+      alternative: {name: cephalexin, dose: 500 mg, freq: twice a day for 7 days, purpose: infection}
+  instructions:
+    - Finish all of the antibiotic even if you feel better.
+    - Drink extra water.
+  warning_signs: [fever, back or side pain, vomiting]
+  follow_up_weeks: 2
+
+A01.01:
+  name: Typhoid meningitis
+  plain: typhoid meningitis
+  medications:
+    - {name: ceftriaxone, dose: 2 g IV, freq: every 12 hours, purpose: typhoid infection}
+  instructions:
+    - Finish the full course of antibiotics even if you feel better.
+    - Wash hands well after using the bathroom.
+    - Do not prepare food for others until stool tests are clear.
+  warning_signs: [worsening headache, stiff neck, confusion, seizures, fever that comes back]
+  follow_up_weeks: 1

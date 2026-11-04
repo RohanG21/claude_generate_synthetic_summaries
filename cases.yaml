@@ -1,0 +1,22 @@
+# =====================================================================
+# CASES: which diagnoses each synthetic summary contains.
+# Diagnoses are ICD-10-CM codes that must exist in diagnoses.yaml.
+# Each copy is a different page: new wording, patient, handwriting
+# sample, and scan noise, with the same diagnoses.
+# =====================================================================
+
+seed: 1234          # same seed + same files = identical output
+
+cases:
+  - {id: htn_dm,       diagnoses: [I10, E11.9],          copies: 40}
+  - {id: dm_ckd,       diagnoses: [E11.9, N18.30, I10],  copies: 40}
+  - {id: backpain_ckd, diagnoses: [M54.50, N18.30],      copies: 30}
+  - {id: afib_backpain, diagnoses: [I48.91, M54.50],     copies: 30}
+  - {id: uri,          diagnoses: [J06.9],               copies: 20}
+  - {id: uti_ckd,      diagnoses: [N39.0, N18.30],       copies: 20}
+
+# Optional: extra random combinations drawn from the knowledge base.
+random:
+  n: 300
+  diagnoses_per_case: [1, 3]
+  pool: all          # or a list of codes, e.g. [I10, E11.9, E78.5]
