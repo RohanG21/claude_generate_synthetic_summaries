@@ -1,0 +1,455 @@
+{
+ "id": "dm_ckd_0000",
+ "case_id": "dm_ckd",
+ "seed": 1234003742,
+ "image": "images/dm_ckd_0000.png",
+ "diagnoses": [
+  {
+   "code": "E11.9",
+   "name": "Type 2 diabetes mellitus without complications"
+  },
+  {
+   "code": "N18.30",
+   "name": "Chronic kidney disease, stage 3 unspecified"
+  },
+  {
+   "code": "I10",
+   "name": "Essential hypertension"
+  }
+ ],
+ "medications": [
+  {
+   "name": "metformin",
+   "dose": "500 mg",
+   "freq": "twice a day with meals",
+   "from_code": "E11.9"
+  },
+  {
+   "name": "lisinopril",
+   "dose": "10 mg",
+   "freq": "once a day",
+   "from_code": "I10"
+  }
+ ],
+ "rules_applied": [
+  "metformin dose 1000 mg -> 500 mg because of N18.30"
+ ],
+ "patient": {
+  "first": "Robert",
+  "name": "Robert Lopez",
+  "dob": "4/21/94"
+ },
+ "visit_date": "09/23/2026",
+ "provider": "Dr. Thompson",
+ "follow_up_weeks": 4,
+ "text": "AVS\nPatient: Robert Lopez\nDate of birth 4/21/94, seen 09/23/2026\nWhy you came in: Today's visit was for type 2 diabetes, chronic kidney disease,\nand high blood pressure.\nAssessment:\n1) E11.9 Type 2 diabetes mellitus without complications\n2) N18.30 Chronic kidney disease, stage 3 unspecified\n3) Essential hypertension - I10\nMeds:\nMetformin 500 mg, twice a day with meals for blood sugar (lower dose because of\nyour chronic kidney disease)\nTake lisinopril 10 mg once a day\nInstructions:\nCut back on sugary drinks, white bread, and sweets. Your metformin dose is\nlower because of your kidney function. Do not take ibuprofen, naproxen, or other\nNSAIDs. For your high blood pressure: Limit salt to less than 2 grams a day.\nNext visit: Return in 4 weeks.",
+ "lines": [
+  {
+   "text": "AVS",
+   "kind": "para",
+   "points": [
+    [
+     201,
+     262
+    ],
+    [
+     327,
+     262
+    ],
+    [
+     327,
+     323
+    ],
+    [
+     201,
+     323
+    ]
+   ]
+  },
+  {
+   "text": "Patient: Robert Lopez",
+   "kind": "item",
+   "points": [
+    [
+     150,
+     414
+    ],
+    [
+     720,
+     413
+    ],
+    [
+     720,
+     484
+    ],
+    [
+     150,
+     485
+    ]
+   ]
+  },
+  {
+   "text": "Date of birth 4/21/94, seen 09/23/2026",
+   "kind": "item",
+   "points": [
+    [
+     152,
+     503
+    ],
+    [
+     1118,
+     501
+    ],
+    [
+     1118,
+     565
+    ],
+    [
+     152,
+     567
+    ]
+   ]
+  },
+  {
+   "text": "Why you came in: Today's visit was for type 2 diabetes, chronic kidney disease,",
+   "kind": "para",
+   "points": [
+    [
+     206,
+     656
+    ],
+    [
+     2263,
+     652
+    ],
+    [
+     2263,
+     746
+    ],
+    [
+     206,
+     750
+    ]
+   ]
+  },
+  {
+   "text": "and high blood pressure.",
+   "kind": "para",
+   "points": [
+    [
+     153,
+     761
+    ],
+    [
+     746,
+     760
+    ],
+    [
+     746,
+     840
+    ],
+    [
+     153,
+     841
+    ]
+   ]
+  },
+  {
+   "text": "Assessment:",
+   "kind": "heading",
+   "points": [
+    [
+     144,
+     902
+    ],
+    [
+     516,
+     902
+    ],
+    [
+     517,
+     971
+    ],
+    [
+     145,
+     971
+    ]
+   ]
+  },
+  {
+   "text": "1) E11.9 Type 2 diabetes mellitus without complications",
+   "kind": "item",
+   "points": [
+    [
+     153,
+     1001
+    ],
+    [
+     1540,
+     998
+    ],
+    [
+     1540,
+     1077
+    ],
+    [
+     153,
+     1080
+    ]
+   ]
+  },
+  {
+   "text": "2) N18.30 Chronic kidney disease, stage 3 unspecified",
+   "kind": "item",
+   "points": [
+    [
+     154,
+     1091
+    ],
+    [
+     1501,
+     1089
+    ],
+    [
+     1501,
+     1169
+    ],
+    [
+     154,
+     1171
+    ]
+   ]
+  },
+  {
+   "text": "3) Essential hypertension - I10",
+   "kind": "item",
+   "points": [
+    [
+     154,
+     1197
+    ],
+    [
+     920,
+     1196
+    ],
+    [
+     920,
+     1275
+    ],
+    [
+     154,
+     1276
+    ]
+   ]
+  },
+  {
+   "text": "Meds:",
+   "kind": "heading",
+   "points": [
+    [
+     153,
+     1345
+    ],
+    [
+     320,
+     1345
+    ],
+    [
+     321,
+     1411
+    ],
+    [
+     154,
+     1411
+    ]
+   ]
+  },
+  {
+   "text": "Metformin 500 mg, twice a day with meals for blood sugar (lower dose because of",
+   "kind": "item",
+   "points": [
+    [
+     157,
+     1427
+    ],
+    [
+     2277,
+     1423
+    ],
+    [
+     2277,
+     1511
+    ],
+    [
+     157,
+     1515
+    ]
+   ]
+  },
+  {
+   "text": "your chronic kidney disease)",
+   "kind": "item",
+   "points": [
+    [
+     176,
+     1551
+    ],
+    [
+     908,
+     1550
+    ],
+    [
+     908,
+     1624
+    ],
+    [
+     176,
+     1625
+    ]
+   ]
+  },
+  {
+   "text": "Take lisinopril 10 mg once a day",
+   "kind": "item",
+   "points": [
+    [
+     151,
+     1650
+    ],
+    [
+     992,
+     1649
+    ],
+    [
+     992,
+     1716
+    ],
+    [
+     151,
+     1717
+    ]
+   ]
+  },
+  {
+   "text": "Instructions:",
+   "kind": "heading",
+   "points": [
+    [
+     155,
+     1785
+    ],
+    [
+     527,
+     1785
+    ],
+    [
+     527,
+     1845
+    ],
+    [
+     155,
+     1845
+    ]
+   ]
+  },
+  {
+   "text": "Cut back on sugary drinks, white bread, and sweets. Your metformin dose is",
+   "kind": "para",
+   "points": [
+    [
+     209,
+     1885
+    ],
+    [
+     2201,
+     1881
+    ],
+    [
+     2202,
+     1952
+    ],
+    [
+     210,
+     1956
+    ]
+   ]
+  },
+  {
+   "text": "lower because of your kidney function. Do not take ibuprofen, naproxen, or other",
+   "kind": "para",
+   "points": [
+    [
+     153,
+     1961
+    ],
+    [
+     2261,
+     1957
+    ],
+    [
+     2261,
+     2043
+    ],
+    [
+     153,
+     2047
+    ]
+   ]
+  },
+  {
+   "text": "NSAIDs. For your high blood pressure: Limit salt to less than 2 grams a day.",
+   "kind": "para",
+   "points": [
+    [
+     157,
+     2069
+    ],
+    [
+     2174,
+     2065
+    ],
+    [
+     2174,
+     2170
+    ],
+    [
+     157,
+     2174
+    ]
+   ]
+  },
+  {
+   "text": "Next visit: Return in 4 weeks.",
+   "kind": "para",
+   "points": [
+    [
+     210,
+     2225
+    ],
+    [
+     963,
+     2224
+    ],
+    [
+     963,
+     2274
+    ],
+    [
+     210,
+     2275
+    ]
+   ]
+  }
+ ],
+ "style_sampled": {
+  "font": "NothingYouCouldDo.ttf",
+  "x_height_px": 23.9,
+  "font_size": 58,
+  "line_spacing_px": 94.6,
+  "slant_deg": 9.54,
+  "stroke_target_px": 3.33,
+  "retries": 0,
+  "stroke_before_match": 3.0,
+  "skew_deg": 0.12
+ }
+}
